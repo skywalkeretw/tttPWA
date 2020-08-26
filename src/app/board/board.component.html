@@ -1,14 +1,18 @@
 <h1 *ngIf="winner == null">Current Player: {{ player }}</h1>
 <h1 style="color: #3f50b5" *ngIf="winner == 'X'">Player {{ winner }} won the game</h1>
 <h1 style="color: #f44336" *ngIf="winner == 'O'">Player {{ winner }} won the game</h1>
-<mat-toolbar>
+<mat-toolbar *ngIf="winner == null" ><!--[color]="xIsNext ? 'primary' : 'warn'"-->
   <h3 style="display: inline">X Score: {{score.x}}</h3>
   <span class="spacer"></span>
   <h3 style="display: inline">O Score: {{score.o}}</h3>
 </mat-toolbar>
-
+<mat-toolbar *ngIf="winner" [color]="winner == 'X' ? 'primary' : 'warn'">
+  <h3 style="display: inline">X Score: {{score.x}}</h3>
+  <span class="spacer"></span>
+  <h3 style="display: inline">O Score: {{score.o}}</h3>
+</mat-toolbar>
 <br>
-<div style="max-width: 600px">
+<div id="board">
   <mat-grid-list cols="3" rowHeight="1:1">
     <mat-grid-tile *ngFor="let val of squares; let i = index">
       <app-square  [value]="val" (click)="makeMove(i)"></app-square>
@@ -16,7 +20,7 @@
   </mat-grid-list>
 </div>
 <br>
-<button style="width: 100%" mat-raised-button (click)="newGame()">Start New Game</button>
-<mat-progress-bar *ngIf="winner == null" color="{{ currentColor() }}" mode="determinate" value="{{moves}}"></mat-progress-bar>
-<mat-progress-bar *ngIf="winner == 'X'"color="primary" mode="determinate" value="{{moves}}"></mat-progress-bar>
-<mat-progress-bar *ngIf="winner == 'O'" color="warn" mode="determinate" value="{{moves}}"></mat-progress-bar>
+<button id="newGame" mat-flat-button color="accent" (click)="newGame()">Start New Game</button>
+<br><br>
+<mat-progress-bar *ngIf="winner == null" [color]="xIsNext ? 'primary' : 'warn'" mode="determinate" value="{{moves}}"></mat-progress-bar>
+<mat-progress-bar *ngIf="winner" [color]="winner == 'X' ? 'primary' : 'warn'" mode="determinate" value="{{moves}}"></mat-progress-bar>

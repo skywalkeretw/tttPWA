@@ -40,9 +40,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   get moves() {
     return this.winner ? 100 : this.moveCounter/9*100
   }
-  currentColor() {
-    return this.xIsNext ?'primary': 'warn'
-  }
+
 
   makeMove(idx: number) {
     if (this.winner == null) {
@@ -59,6 +57,11 @@ export class BoardComponent implements OnInit, OnDestroy {
           this.score.o++
         }
         localStorage.setItem('tttScore', JSON.stringify(this.score))
+        /*
+        if (confirm("Player "+ this.winner + " won the game!\n Play another round?")) {
+          this.newGame()
+        }
+        */
       }
     }
   }
