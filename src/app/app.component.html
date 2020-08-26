@@ -1,8 +1,4 @@
-<app-toolbar></app-toolbar>
+<app-toolbar (reset)="resetScore($event)"></app-toolbar>
 <mat-card>
-  <app-board></app-board>
+  <app-board [reset]="reset"></app-board>
 </mat-card>
-
-
-
-<router-outlet></router-outlet>

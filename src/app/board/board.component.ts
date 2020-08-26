@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 
 
 @Component({
@@ -6,7 +6,9 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.sass']
 })
-export class BoardComponent implements OnInit, OnDestroy {
+export class BoardComponent implements OnInit, OnChanges, OnDestroy {
+
+  @Input() reset: boolean
   squares: any[];
   xIsNext: boolean;
   winner: string;
@@ -25,6 +27,21 @@ export class BoardComponent implements OnInit, OnDestroy {
     }
     this.newGame()
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes.reset.currentValue)
+    if (changes.reset.currentValue) {
+      this.score = {x: 0, o:0};
+      localStorage.setItem('tttScore', JSON.stringify(this.score));
+    }
+  }
+
+  ngOnDestroy(): void {
+    localStorage.setItem('tttScore', JSON.stringify(this.score));
+    // localStorage.setItem('tttCurrentGame', JSON.stringify(this.squares))
+  }
+
+
 
   newGame() {
     this.squares = Array(9).fill(null);
@@ -56,7 +73,7 @@ export class BoardComponent implements OnInit, OnDestroy {
         } else if (this.winner == 'O') {
           this.score.o++
         }
-        localStorage.setItem('tttScore', JSON.stringify(this.score))
+        localStorage.setItem('tttScore', JSON.stringify(this.score));
         /*
         if (confirm("Player "+ this.winner + " won the game!\n Play another round?")) {
           this.newGame()
@@ -64,6 +81,11 @@ export class BoardComponent implements OnInit, OnDestroy {
         */
       }
     }
+  }
+
+  resetScore() {
+    this.score = {x: 0, o:0};
+    localStorage.setItem('tttScore', JSON.stringify(this.score));
   }
 
   calculateWinner() {
@@ -88,10 +110,5 @@ export class BoardComponent implements OnInit, OnDestroy {
       }
     }
     return null;
-  }
-
-  ngOnDestroy(): void {
-    localStorage.setItem('tttScore', JSON.stringify(this.score))
-    // localStorage.setItem('tttCurrentGame', JSON.stringify(this.squares))
   }
 }

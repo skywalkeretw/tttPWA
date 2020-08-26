@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +6,15 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent {
-  title = 'tic-tac-toe';
+
+  @Input() reset: boolean
+
+  resetScore(value: boolean) {
+    if (value) {
+      this.reset = true;
+      setTimeout(() => {
+        this.reset = null;
+      }, 5);
+    }
+  }
 }

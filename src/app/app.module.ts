@@ -15,6 +15,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {MatMenuModule} from "@angular/material/menu";
 
 @NgModule({
   declarations: [
@@ -23,18 +24,19 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
     BoardComponent,
     ToolbarComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
-    BrowserAnimationsModule,
-    MatButtonModule,
-    MatGridListModule,
-    MatCardModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatProgressBarModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
+        BrowserAnimationsModule,
+        MatButtonModule,
+        MatGridListModule,
+        MatCardModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatProgressBarModule,
+        MatMenuModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

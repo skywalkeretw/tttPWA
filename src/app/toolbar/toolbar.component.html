@@ -2,5 +2,14 @@
   <mat-toolbar-row>
     <span>Tic-Tac-Toe</span>
     <span class="spacer"></span>
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="resetScore()">
+        <mat-icon>delete</mat-icon>
+        <span>Reset Score</span>
+      </button>
+    </mat-menu>
   </mat-toolbar-row>
 </mat-toolbar>
