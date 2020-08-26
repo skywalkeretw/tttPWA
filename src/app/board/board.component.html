@@ -22,7 +22,7 @@
   </mat-grid-list>
 </div>
 <br>
-<button mat-raised-button id="newGame" color="primary" (click)="newGame()">New Game</button>
+<button mat-raised-button id="newGame" color="accent" (click)="newGame()">New Game</button>
 <br><br>
 <mat-progress-bar *ngIf="winner == null" [color]="xIsNext ? 'primary' : 'warn'" mode="determinate" value="{{moves}}"></mat-progress-bar>
 <mat-progress-bar *ngIf="winner" [color]="winner == 'X' ? 'primary' : 'warn'" mode="determinate" value="{{moves}}"></mat-progress-bar>
