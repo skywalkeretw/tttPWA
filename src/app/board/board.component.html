@@ -1,4 +1,4 @@
-<h1 *ngIf="winner == null">Current Player: {{ player }}</h1>
+<h1 *ngIf="winner == null">Current Player: {{ xIsNext ? 'X' : 'O' }}</h1>
 <h1 style="color: #3f50b5" *ngIf="winner == 'X'">Player {{ winner }} won the game</h1>
 <h1 style="color: #f44336" *ngIf="winner == 'O'">Player {{ winner }} won the game</h1>
 
@@ -24,5 +24,5 @@
 <br>
 <button mat-raised-button id="newGame" color="accent" (click)="newGame()">New Game</button>
 <br><br>
-<mat-progress-bar *ngIf="winner == null" [color]="xIsNext ? 'primary' : 'warn'" mode="determinate" value="{{moves}}"></mat-progress-bar>
-<mat-progress-bar *ngIf="winner" [color]="winner == 'X' ? 'primary' : 'warn'" mode="determinate" value="{{moves}}"></mat-progress-bar>
+<mat-progress-bar *ngIf="winner == null" [color]="xIsNext ? 'primary' : 'warn'" mode="determinate" value="{{ winner ? 100 : moveCounter/9*100 }}"></mat-progress-bar>
+<mat-progress-bar *ngIf="winner" [color]="winner == 'X' ? 'primary' : 'warn'" mode="determinate" value="{{ winner ? 100 : moveCounter/9*100 }}"></mat-progress-bar>

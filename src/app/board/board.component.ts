@@ -17,9 +17,16 @@ export class BoardComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor() { }
 
+  /**
+   * Angular Life Cycle
+   */
+
+  /**
+   * OnInit
+   * when Component is Initialised
+   */
   ngOnInit(): void {
     const savedScore = JSON.parse(localStorage.getItem('tttScore'));
-    // const currentGame = JSON.parse(localStorage.getItem('tttCurrentGame'));
     if (savedScore !== null){
       this.score = savedScore
     } else {
@@ -28,66 +35,58 @@ export class BoardComponent implements OnInit, OnChanges, OnDestroy {
     this.newGame()
   }
 
+  /**
+   * OnChange
+   * when Component is changed
+   * @param changes
+   */
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes.reset.currentValue)
     if (changes.reset.currentValue) {
       this.score = {x: 0, o:0};
       localStorage.setItem('tttScore', JSON.stringify(this.score));
     }
   }
 
+  /**
+   * OnDestroy
+   * When Component is destroyed
+   */
   ngOnDestroy(): void {
     localStorage.setItem('tttScore', JSON.stringify(this.score));
-    // localStorage.setItem('tttCurrentGame', JSON.stringify(this.squares))
   }
 
-
-
+  /**
+   * resets all values for a new game player 1 us choosen at random
+   */
   newGame() {
     this.squares = Array(9).fill(null);
     this.winner = null;
-    this.xIsNext = true;
+    this.xIsNext = Math.random() >= 0.5;
     this.moveCounter = 0;
-
   }
 
-  get player() {
-    return this.xIsNext ? 'X' : 'O';
-  }
-  get moves() {
-    return this.winner ? 100 : this.moveCounter/9*100
-  }
-
-
+  /**
+   *
+   * @param idx
+   */
   makeMove(idx: number) {
     if (this.winner == null) {
       if (!this.squares[idx]) {
-        this.squares.splice(idx, 1, this.player);
+        this.squares.splice(idx, 1, this.xIsNext ? 'X' : 'O');
         this.xIsNext = !this.xIsNext;
         this.moveCounter++
       }
       this.winner = this.calculateWinner();
       if (this.winner){
-        if (this.winner == 'X') {
-          this.score.x++
-        } else if (this.winner == 'O') {
-          this.score.o++
-        }
+        this.winner == 'X' ? this.score.x++ :  this.score.o++;
         localStorage.setItem('tttScore', JSON.stringify(this.score));
-        /*
-        if (confirm("Player "+ this.winner + " won the game!\n Play another round?")) {
-          this.newGame()
-        }
-        */
       }
     }
   }
 
-  resetScore() {
-    this.score = {x: 0, o:0};
-    localStorage.setItem('tttScore', JSON.stringify(this.score));
-  }
-
+  /**
+   * chckes fields to see if one of the players has won the game
+   */
   calculateWinner() {
     const lines = [
       [0, 1, 2],
@@ -111,4 +110,5 @@ export class BoardComponent implements OnInit, OnChanges, OnDestroy {
     }
     return null;
   }
+
 }
