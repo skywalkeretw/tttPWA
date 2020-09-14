@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, OnDestroy, OnInit, } from '@angular/core';
 
 
 @Component({
@@ -6,14 +6,14 @@ import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@an
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.sass']
 })
-export class BoardComponent implements OnInit, OnChanges, OnDestroy {
+export class BoardComponent implements OnInit, OnDestroy {
 
-  @Input() reset: boolean
   squares: any[];
   xIsNext: boolean;
   winner: string;
-  moveCounter: number
-  score: {x: number, o: number}
+  winnerRow: number[];
+  moveCounter: number;
+  score: {x: number, o: number, draw: number};
 
   constructor() { }
 
@@ -30,21 +30,9 @@ export class BoardComponent implements OnInit, OnChanges, OnDestroy {
     if (savedScore !== null){
       this.score = savedScore
     } else {
-      this.score = {x: 0, o:0}
+      this.score = {x: 0, o:0, draw:0}
     }
     this.newGame()
-  }
-
-  /**
-   * OnChange
-   * when Component is changed
-   * @param changes
-   */
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.reset.currentValue) {
-      this.score = {x: 0, o:0};
-      localStorage.setItem('tttScore', JSON.stringify(this.score));
-    }
   }
 
   /**
@@ -61,6 +49,7 @@ export class BoardComponent implements OnInit, OnChanges, OnDestroy {
   newGame() {
     this.squares = Array(9).fill(null);
     this.winner = null;
+    this.winnerRow = [];
     this.xIsNext = Math.random() >= 0.5;
     this.moveCounter = 0;
   }
@@ -70,6 +59,7 @@ export class BoardComponent implements OnInit, OnChanges, OnDestroy {
    * @param idx
    */
   makeMove(idx: number) {
+    console.log(this.moveCounter)
     if (this.winner == null) {
       if (!this.squares[idx]) {
         this.squares.splice(idx, 1, this.xIsNext ? 'X' : 'O');
@@ -79,11 +69,17 @@ export class BoardComponent implements OnInit, OnChanges, OnDestroy {
       this.winner = this.calculateWinner();
       if (this.winner){
         this.winner == 'X' ? this.score.x++ :  this.score.o++;
-        localStorage.setItem('tttScore', JSON.stringify(this.score));
       }
+      if (this.winner === null && this.moveCounter === 8) {
+        this.score.draw++
+      }
+      localStorage.setItem('tttScore', JSON.stringify(this.score));
     }
   }
 
+  showWinnerRow(i: number) {
+    return this.winnerRow.includes(i) && (this.winner === 'X' || this.winner === 'O');
+  }
   /**
    * chckes fields to see if one of the players has won the game
    */
@@ -105,6 +101,7 @@ export class BoardComponent implements OnInit, OnChanges, OnDestroy {
         this.squares[a] === this.squares[b] &&
         this.squares[a] === this.squares[c]
       ) {
+        this.winnerRow = lines[i];
         return this.squares[a];
       }
     }

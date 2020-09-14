@@ -16,13 +16,23 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatMenuModule} from "@angular/material/menu";
+import { HomeComponent } from './home/home.component';
+import { LocalComponent } from './local/local.component';
+import { OnlineComponent } from './online/online.component';
+import { SettingsComponent } from './settings/settings.component';
+import { InfoBarComponent } from './info-bar/info-bar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SquareComponent,
     BoardComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    HomeComponent,
+    LocalComponent,
+    OnlineComponent,
+    SettingsComponent,
+    InfoBarComponent
   ],
     imports: [
         BrowserModule,
