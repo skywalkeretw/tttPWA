@@ -1,1 +1,13 @@
-<p>online works!</p>
+<div class="lobby">
+
+</div>
+<div class="game">
+
+</div>
+<mat-selection-list [multiple]="false">
+  <mat-list-option *ngFor="let game of games" [value]="game.value">
+    {{ game.name }}
+  </mat-list-option>
+</mat-selection-list>
+
+<button mat-raised-button color="primary">Create new Game</button>

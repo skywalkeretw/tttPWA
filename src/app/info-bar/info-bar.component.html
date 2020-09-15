@@ -1,6 +1,7 @@
 <h1 *ngIf="winner == null">Current Player: {{ xIsNext ? 'X' : 'O' }}</h1>
-<h1 style="color: #3f50b5" *ngIf="winner == 'X'">Player {{ winner }} won the game</h1>
-<h1 style="color: #f44336" *ngIf="winner == 'O'">Player {{ winner }} won the game</h1>
+<h1 style="color: #3f50b5" *ngIf="winner == 'X'">{{ winner }} won the game</h1>
+<h1 style="color: #f44336" *ngIf="winner == 'O'">{{ winner }} won the game</h1>
+<h1 *ngIf="winner == 'd'">Game is a Draw</h1>
 
 <mat-toolbar class="info-bar" *ngIf="winner == null" [color]="xIsNext ? 'primary' : 'warn'">
   <h3 style="display: inline">X Score: {{score.x}}</h3>

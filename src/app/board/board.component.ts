@@ -70,7 +70,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       if (this.winner){
         this.winner == 'X' ? this.score.x++ :  this.score.o++;
       }
-      if (this.winner === null && this.moveCounter === 8) {
+      if (this.winner === 'd') {
         this.score.draw++
       }
       localStorage.setItem('tttScore', JSON.stringify(this.score));
@@ -104,6 +104,9 @@ export class BoardComponent implements OnInit, OnDestroy {
         this.winnerRow = lines[i];
         return this.squares[a];
       }
+    }
+    if (this.moveCounter === 9 ){
+      return 'd'
     }
     return null;
   }
