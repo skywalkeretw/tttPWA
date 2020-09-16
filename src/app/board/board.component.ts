@@ -1,4 +1,5 @@
 import {Component, OnDestroy, OnInit, } from '@angular/core';
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
 
 
 @Component({
@@ -15,7 +16,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   moveCounter: number;
   score: {x: number, o: number, draw: number};
 
-  constructor() { }
+  constructor(private _snackBar: MatSnackBar) { }
 
   /**
    * Angular Life Cycle
@@ -52,6 +53,9 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.winnerRow = [];
     this.xIsNext = Math.random() >= 0.5;
     this.moveCounter = 0;
+    const player = this.xIsNext ? 'X' : 'O';
+    const message = 'New Game Started, Player ' + player + ' beginns.'
+    this.snackBar(message)
   }
 
   /**
@@ -69,12 +73,30 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.winner = this.calculateWinner();
       if (this.winner){
         this.winner == 'X' ? this.score.x++ :  this.score.o++;
+        this.snackBar('Player ' + this.winner + ' Won the Game!', '', 5000);
+
       }
       if (this.winner === 'd') {
         this.score.draw++
+        this.snackBar('Its a Draw!', '', 5000);
       }
       localStorage.setItem('tttLocalScore', JSON.stringify(this.score));
     }
+  }
+
+  snackBar(message: string,
+           action: string = '',
+           duration: number = 2000,
+           horizontalPosition: MatSnackBarHorizontalPosition = 'center',
+           verticalPosition: MatSnackBarVerticalPosition = 'top') {
+    this._snackBar.open(
+      message,
+      action,
+      {
+        duration: duration,
+        horizontalPosition: horizontalPosition,
+        verticalPosition: verticalPosition,
+      });
   }
 
   showWinnerRow(i: number) {
