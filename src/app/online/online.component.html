@@ -1,13 +1,14 @@
-<div class="lobby">
+<div class="lobby" *ngIf="!gameIsActive">
+  <span class="spacer"></span><button mat-button><mat-icon>refresh</mat-icon></button>
+  <mat-selection-list [multiple]="false">
+    <mat-list-option *ngFor="let game of games" [value]="game.value">
+      {{ game.name }}
+    </mat-list-option>
+  </mat-selection-list>
+
+  <button mat-raised-button color="primary">Create new Game</button>
+</div>
+<div class="game" *ngIf="gameIsActive">
 
 </div>
-<div class="game">
 
-</div>
-<mat-selection-list [multiple]="false">
-  <mat-list-option *ngFor="let game of games" [value]="game.value">
-    {{ game.name }}
-  </mat-list-option>
-</mat-selection-list>
-
-<button mat-raised-button color="primary">Create new Game</button>

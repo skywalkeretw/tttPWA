@@ -26,7 +26,7 @@ export class BoardComponent implements OnInit, OnDestroy {
    * when Component is Initialised
    */
   ngOnInit(): void {
-    const savedScore = JSON.parse(localStorage.getItem('tttScore'));
+    const savedScore = JSON.parse(localStorage.getItem('tttLocalScore'));
     if (savedScore !== null){
       this.score = savedScore
     } else {
@@ -40,7 +40,7 @@ export class BoardComponent implements OnInit, OnDestroy {
    * When Component is destroyed
    */
   ngOnDestroy(): void {
-    localStorage.setItem('tttScore', JSON.stringify(this.score));
+    localStorage.setItem('tttLocalScore', JSON.stringify(this.score));
   }
 
   /**
@@ -73,7 +73,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       if (this.winner === 'd') {
         this.score.draw++
       }
-      localStorage.setItem('tttScore', JSON.stringify(this.score));
+      localStorage.setItem('tttLocalScore', JSON.stringify(this.score));
     }
   }
 

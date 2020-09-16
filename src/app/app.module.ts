@@ -22,6 +22,7 @@ import {SettingsComponent} from './settings/settings.component';
 import {InfoBarComponent} from './info-bar/info-bar.component';
 import {MatListModule} from "@angular/material/list";
 import {HttpClientModule} from "@angular/common/http";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import {HttpClientModule} from "@angular/common/http";
     MatIconModule,
     MatProgressBarModule,
     MatMenuModule,
-    MatListModule
+    MatListModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

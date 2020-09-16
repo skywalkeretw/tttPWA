@@ -8,8 +8,8 @@ import {ServerApiService} from "../server-api.service";
   styleUrls: ['./online.component.sass']
 })
 export class OnlineComponent implements OnInit, OnDestroy {
-  serverUrl = "ws://localhost:3000/joinGame"
-  // ws = new WebSocket(this.serverUrl )
+
+  private ws: WebSocket;
   games: {name: string, value: string}[] = [
     {name: "1", value: ""},
     {name: "2", value: ""},
@@ -17,7 +17,7 @@ export class OnlineComponent implements OnInit, OnDestroy {
     {name: "4", value: ""},
     ];
 
-  gameIsActive
+  gameIsActive: boolean;
 
   constructor(private serverApi: ServerApiService) { }
 
@@ -27,9 +27,29 @@ export class OnlineComponent implements OnInit, OnDestroy {
       console.log(data);
       this.games = data;
     })
+    this.getGames()
+    this.gameIsActive = false;
   }
 
   ngOnDestroy(): void {
+  }
+
+
+  getGames() {
+    //call data from api
+  }
+
+  joinGame(id: string) {
+    const url = "ws://localhost:3000/joinGame"
+    this.ws = new WebSocket(url)
+
+
+  }
+
+  createGame() {
+    const url = "ws://localhost:3000/createGame"
+    this.ws = new WebSocket(url)
+
   }
 
 
