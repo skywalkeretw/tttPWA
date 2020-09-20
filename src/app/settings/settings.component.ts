@@ -10,23 +10,35 @@ import {MatSnackBar,
 })
 export class SettingsComponent implements OnInit {
 
-  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-  verticalPosition: MatSnackBarVerticalPosition = 'top'
+  uname: string = '';
   constructor(private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    this.uname = localStorage.getItem('tttUname');
   }
 
   resetLocalScore() {
     localStorage.removeItem('tttLocalScore');
-    this._snackBar.open(
-      'Score has been reset!',
-      '',
-      {
-        duration: 1000,
-        horizontalPosition: this.horizontalPosition,
-        verticalPosition: this.verticalPosition,
+    this.snackBar('Score has been reset!');
+  }
 
-    });
+  setUser() {
+    localStorage.setItem('tttUname', this.uname);
+    this.snackBar('Username has been set.');
+  }
+
+  snackBar(message: string,
+           action: string = '',
+           duration: number = 2000,
+           horizontalPosition: MatSnackBarHorizontalPosition = 'center',
+           verticalPosition: MatSnackBarVerticalPosition = 'top') {
+    this._snackBar.open(
+      message,
+      action,
+      {
+        duration: duration,
+        horizontalPosition: horizontalPosition,
+        verticalPosition: verticalPosition,
+      });
   }
 }

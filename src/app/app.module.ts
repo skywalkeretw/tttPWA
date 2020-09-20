@@ -23,6 +23,9 @@ import {InfoBarComponent} from './info-bar/info-bar.component';
 import {MatListModule} from "@angular/material/list";
 import {HttpClientModule} from "@angular/common/http";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {FormsModule} from "@angular/forms";
+import {MatInputModule} from "@angular/material/input";
 
 @NgModule({
   declarations: [
@@ -50,7 +53,10 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     MatProgressBarModule,
     MatMenuModule,
     MatListModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

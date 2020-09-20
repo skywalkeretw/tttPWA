@@ -1,1 +1,14 @@
-<button mat-flat-button color="accent" (click)="resetLocalScore()">Reset Score<mat-icon>delete</mat-icon></button>
+
+<form class="example-form">
+  <mat-form-field class="example-form-field" style="width: 80%">
+    <mat-label>Username</mat-label>
+    <input style="width: 100%" matInput type="text" [value]="uname">
+  </mat-form-field>
+  <button style="width: 20%" mat-flat-button color="primary" (click)="setUser()">
+    Reset Score<mat-icon>user</mat-icon>
+  </button>
+</form>
+
+<button mat-flat-button color="accent" (click)="resetLocalScore()">
+  Reset Score<mat-icon>delete</mat-icon>
+</button>

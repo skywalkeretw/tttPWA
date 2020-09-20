@@ -12,20 +12,12 @@ export class BoardComponent implements OnInit, OnDestroy {
   squares: any[];
   xIsNext: boolean;
   winner: string;
-  winnerRow: number[];
+  private winnerRow: number[];
   moveCounter: number;
   score: {x: number, o: number, draw: number};
 
   constructor(private _snackBar: MatSnackBar) { }
 
-  /**
-   * Angular Life Cycle
-   */
-
-  /**
-   * OnInit
-   * when Component is Initialised
-   */
   ngOnInit(): void {
     const savedScore = JSON.parse(localStorage.getItem('tttLocalScore'));
     if (savedScore !== null){
@@ -36,17 +28,10 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.newGame()
   }
 
-  /**
-   * OnDestroy
-   * When Component is destroyed
-   */
   ngOnDestroy(): void {
     localStorage.setItem('tttLocalScore', JSON.stringify(this.score));
   }
 
-  /**
-   * resets all values for a new game player 1 us choosen at random
-   */
   newGame() {
     this.squares = Array(9).fill(null);
     this.winner = null;
@@ -58,10 +43,6 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.snackBar(message)
   }
 
-  /**
-   *
-   * @param idx
-   */
   makeMove(idx: number) {
     console.log(this.moveCounter)
     if (this.winner == null) {
@@ -72,15 +53,15 @@ export class BoardComponent implements OnInit, OnDestroy {
       }
       this.winner = this.calculateWinner();
       if (this.winner){
-        this.winner == 'X' ? this.score.x++ :  this.score.o++;
-        this.snackBar('Player ' + this.winner + ' Won the Game!', '', 5000);
-
+        if (this.winner === 'd') {
+          this.score.draw++
+          this.snackBar('Its a Draw!', '', 5000);
+        } else {
+          this.winner == 'X' ? this.score.x++ :  this.score.o++;
+          this.snackBar('Player ' + this.winner + ' Won the Game!', '', 5000);
+        }
+        localStorage.setItem('tttLocalScore', JSON.stringify(this.score));
       }
-      if (this.winner === 'd') {
-        this.score.draw++
-        this.snackBar('Its a Draw!', '', 5000);
-      }
-      localStorage.setItem('tttLocalScore', JSON.stringify(this.score));
     }
   }
 
@@ -102,9 +83,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   showWinnerRow(i: number) {
     return this.winnerRow.includes(i) && (this.winner === 'X' || this.winner === 'O');
   }
-  /**
-   * chckes fields to see if one of the players has won the game
-   */
+
   calculateWinner() {
     const lines = [
       [0, 1, 2],
