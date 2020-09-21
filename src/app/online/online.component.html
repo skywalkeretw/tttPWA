@@ -1,19 +1,20 @@
-<div [hidden]="gameIsActive">
+<div *ngIf="!gameIsActive">
   <mat-selection-list [multiple]="false">
     <mat-list-option *ngFor="let game of games" (click)="joinGame(game.gameId)">
       {{ game.name }}
     </mat-list-option>
   </mat-selection-list>
 
-  <button mat-raised-button color="primary" (click)="createGame()">Create new Game</button>
+  <button class="newGameBtn" mat-raised-button color="primary" (click)="createGame()">Create new Game</button>
 </div>
 
 <div  class="game" *ngIf="gameIsActive">
-  <app-info-bar [score]="score" [winner]="winner" [xIsNext]="xIsNext"></app-info-bar>
+  <app-info-bar></app-info-bar>
+  <app-info-bar [score]="data.gameData.score" [winner]="data.gameData.winner" [xIsNext]="data.gameData.xIsNext"></app-info-bar>
   <br>
   <div id="board">
     <mat-grid-list cols="3" rowHeight="1:1">
-      <mat-grid-tile class="gameBoardSquare" *ngFor="let val of squares; let i = index">
+      <mat-grid-tile class="gameBoardSquare" *ngFor="let val of data.gameData.squares; let i = index">
         <app-square [value]="val" (click)="makeMove(i)"></app-square>
       </mat-grid-tile>
     </mat-grid-list>
@@ -21,8 +22,8 @@
   <br>
   <button mat-raised-button id="newGame" color="accent" (click)="newGame()" aria-label="New Game">New Game</button>
   <br><br>
-  <mat-progress-bar *ngIf="winner == null" [color]="xIsNext ? 'primary' : 'warn'" mode="determinate" value="{{ winner ? 100 : moveCounter/9*100 }}"></mat-progress-bar>
-  <mat-progress-bar *ngIf="winner" [color]="winner == 'X' ? 'primary' : 'warn'" mode="determinate" value="{{ winner ? 100 : moveCounter/9*100 }}"></mat-progress-bar>
+  <mat-progress-bar *ngIf="data.gameData.winner == null" [color]="data.gameData.xIsNext ? 'primary' : 'warn'" mode="determinate" value="{{ data.gameData.winner ? 100 : data.gameData.moveCounter/9*100 }}"></mat-progress-bar>
+  <mat-progress-bar *ngIf="data.gameData.winner" [color]="data.gameData.winner == 'X' ? 'primary' : 'warn'" mode="determinate" value="{{ data.gameData.winner ? 100 : data.gameData.moveCounter/9*100 }}"></mat-progress-bar>
 
 </div>
 

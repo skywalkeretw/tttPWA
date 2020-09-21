@@ -26,24 +26,29 @@ interface game {
 export class OnlineComponent implements OnInit, OnDestroy {
   url = "ws://localhost:3000/ws"
 
-  private ws: WebSocket ;
+  ws: WebSocket ;
   games: game[] = []
   gameIsActive: boolean;
-  gameData: game
-
-
-  squares: any[];
-  xIsNext: boolean;
-  winner: string;
-  private winnerRow: number[];
-  moveCounter: number;
-  score: {x: number, o: number, draw: number};
+  data: game
 
   constructor(private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.ws = new WebSocket(this.url)
     this.gameIsActive = false;
+    this.data = {
+      gameId: "",
+        name: "",
+      playerx: "", //player 1 id
+      playero: "", //player 2 id
+      gameData: {
+        squares: [],
+        xIsNext: false,
+        winner: "",
+        moveCounter: 0,
+        score: {x: 0, o: 0, draw: 0},
+      }
+    }
     this.WebSocketEventlistener()
   }
 
@@ -53,10 +58,16 @@ export class OnlineComponent implements OnInit, OnDestroy {
 
   WebSocketEventlistener() {
     this.ws.addEventListener("message", ({data}) => {
-      const parsedData = JSON.parse(data)
-      console.log("on init")
-
-      this.games = parsedData
+      const parsedData = JSON.parse(data);
+      // console.log(parsedData)
+      switch (parsedData.action) {
+        case "activeGames":
+          this.games = parsedData.data;
+          break;
+        case "gameCreated":
+          this.data = parsedData.data;
+          console.log(this.data);
+      }
     })
   }
   getGames() {
@@ -70,7 +81,7 @@ export class OnlineComponent implements OnInit, OnDestroy {
           action:"joinGame",
           data: {
             name: localStorage.getItem("tttUname"),
-            oppenentId: id
+            gameId: id
           }
         }
       ))
