@@ -9,8 +9,9 @@
 </div>
 
 <div  class="game" *ngIf="gameIsActive">
-  <app-info-bar></app-info-bar>
-  <app-info-bar [score]="data.gameData.score" [winner]="data.gameData.winner" [xIsNext]="data.gameData.xIsNext"></app-info-bar>
+  <!--<app-info-bar [score]="data.gameData.score" [winner]="data.gameData.winner" [xIsNext]="data.gameData.xIsNext"></app-info-bar>-->
+  <h1>{{playerIs}}</h1>
+  <app-info-bar [score]="data.gameData.score" [winner]="data.gameData.winner" [xIsNext]="data.gameData.xIsNext" ></app-info-bar>
   <br>
   <div id="board">
     <mat-grid-list cols="3" rowHeight="1:1">

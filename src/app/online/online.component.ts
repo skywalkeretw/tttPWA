@@ -30,6 +30,7 @@ export class OnlineComponent implements OnInit, OnDestroy {
   games: game[] = []
   gameIsActive: boolean;
   data: game
+  playerIs: string
 
   constructor(private _snackBar: MatSnackBar) { }
 
@@ -44,7 +45,7 @@ export class OnlineComponent implements OnInit, OnDestroy {
       gameData: {
         squares: [],
         xIsNext: false,
-        winner: "",
+        winner: null,
         moveCounter: 0,
         score: {x: 0, o: 0, draw: 0},
       }
@@ -66,12 +67,24 @@ export class OnlineComponent implements OnInit, OnDestroy {
           break;
         case "gameCreated":
           this.data = parsedData.data;
-          console.log(this.data);
+          this.snackBar("You created A new Game. You are Player X");
+          this.playerIs = 'x';
+          break;
+        case "joinGame":
+          this.data = parsedData.data;
+          this.snackBar("You Joined Game " + this.data.name + " You are Player O");
+          this.playerIs = 'o';
+          break;
+        case "startGame":
+          this.data = parsedData.data;
+          this.snackBar("New Game has started");
+          break;
+        case "move":
+          this.data = parsedData.data;
+          console.log(this.data)
+          break;
       }
     })
-  }
-  getGames() {
-    //call data from api
   }
 
   joinGame(id: string) {
@@ -95,7 +108,7 @@ export class OnlineComponent implements OnInit, OnDestroy {
         {
           action:"createGame",
           data: {
-            name: localStorage.getItem("tttUname")
+
           }
         }
       ));
@@ -103,48 +116,33 @@ export class OnlineComponent implements OnInit, OnDestroy {
     }
   }
 
-/*
   newGame() {
-    this.squares = Array(9).fill(null);
-    this.winner = null;
-    this.winnerRow = [];
-    this.xIsNext = Math.random() >= 0.5;
-    this.moveCounter = 0;
-    const player = this.xIsNext ? 'X' : 'O';
-    const message = 'New Game Started, Player ' + player + ' beginns.'
-    this.snackBar(message)
-  }
-
-  makeMove(idx: number) {
-    console.log(this.moveCounter)
-    if (this.winner == null) {
-      if (!this.squares[idx]) {
-        this.squares.splice(idx, 1, this.xIsNext ? 'X' : 'O');
-        this.xIsNext = !this.xIsNext;
-        this.moveCounter++
-      }
-      this.winner = this.calculateWinner();
-      if (this.winner){
-        if (this.winner === 'd') {
-          this.score.draw++
-          this.snackBar('Its a Draw!', '', 5000);
-        } else {
-          this.winner == 'X' ? this.score.x++ :  this.score.o++;
-          this.snackBar('Player ' + this.winner + ' Won the Game!', '', 5000);
+    if (this.gameIsActive) {
+      this.ws.send(JSON.stringify(
+        {
+          action:"newGame",
+          data: {
+            gameId: this.data.gameId
+          }
         }
-        localStorage.setItem('tttLocalScore', JSON.stringify(this.score));
-      }
+      ));
+      this.gameIsActive = true
     }
-  }
-*/
-
-
-  newGame() {
-
   }
 
   makeMove(i: number) {
-
+    if (this.gameIsActive) {
+      this.ws.send(JSON.stringify(
+        {
+          action:"makeMove",
+          data: {
+            gameId: this.data.gameId,
+            move: i,
+          }
+        }
+      ));
+      this.gameIsActive = true
+    }
   }
 
   snackBar(message: string,
