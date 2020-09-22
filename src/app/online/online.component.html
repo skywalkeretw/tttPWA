@@ -10,7 +10,8 @@
 
 <div  class="game" *ngIf="gameIsActive">
   <!--<app-info-bar [score]="data.gameData.score" [winner]="data.gameData.winner" [xIsNext]="data.gameData.xIsNext"></app-info-bar>-->
-  <h1>{{playerIs}}</h1>
+
+  <h1>{{ data.name }}: {{data.playerx === uid ? 'X': 'O'}}</h1>
   <app-info-bar [score]="data.gameData.score" [winner]="data.gameData.winner" [xIsNext]="data.gameData.xIsNext" ></app-info-bar>
   <br>
   <div id="board">
@@ -21,7 +22,8 @@
     </mat-grid-list>
   </div>
   <br>
-  <button mat-raised-button id="newGame" color="accent" (click)="newGame()" aria-label="New Game">New Game</button>
+  <button mat-raised-button id="leaveGame" color="warn" (click)="leaveGame()" aria-label="New Game">Leave Game</button>
+  <button mat-raised-button id="newGame" color="primary" (click)="newGame()" aria-label="New Game">New Game</button>
   <br><br>
   <mat-progress-bar *ngIf="data.gameData.winner == null" [color]="data.gameData.xIsNext ? 'primary' : 'warn'" mode="determinate" value="{{ data.gameData.winner ? 100 : data.gameData.moveCounter/9*100 }}"></mat-progress-bar>
   <mat-progress-bar *ngIf="data.gameData.winner" [color]="data.gameData.winner == 'X' ? 'primary' : 'warn'" mode="determinate" value="{{ data.gameData.winner ? 100 : data.gameData.moveCounter/9*100 }}"></mat-progress-bar>

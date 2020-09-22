@@ -1,6 +1,4 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {ServerApiService} from "../server-api.service";
 import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
 
 
@@ -30,25 +28,22 @@ export class OnlineComponent implements OnInit, OnDestroy {
   games: game[] = []
   gameIsActive: boolean;
   data: game
-  playerIs: string
+  uid: string
 
   constructor(private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.ws = new WebSocket(this.url)
     this.gameIsActive = false;
-    this.data = {
-      gameId: "",
-        name: "",
-      playerx: "", //player 1 id
-      playero: "", //player 2 id
-      gameData: {
-        squares: [],
-        xIsNext: false,
-        winner: null,
-        moveCounter: 0,
-        score: {x: 0, o: 0, draw: 0},
-      }
+    this.clearData()
+    let ws = this.ws
+    ws.onopen = function () {
+      ws.send(JSON.stringify(
+        {
+          action:"getGames",
+          data: {}
+        }
+      ));
     }
     this.WebSocketEventlistener()
   }
@@ -68,12 +63,12 @@ export class OnlineComponent implements OnInit, OnDestroy {
         case "gameCreated":
           this.data = parsedData.data;
           this.snackBar("You created A new Game. You are Player X");
-          this.playerIs = 'x';
+          this.uid = this.data.playerx;
           break;
         case "joinGame":
           this.data = parsedData.data;
           this.snackBar("You Joined Game " + this.data.name + " You are Player O");
-          this.playerIs = 'o';
+          this.uid = this.data.playero;
           break;
         case "startGame":
           this.data = parsedData.data;
@@ -82,6 +77,14 @@ export class OnlineComponent implements OnInit, OnDestroy {
         case "move":
           this.data = parsedData.data;
           console.log(this.data)
+          break;
+        case "playerLeft":
+          this.data = parsedData.data
+          this.uid = this.data.playerx === this.uid ? this.uid : this.data.playero
+          break;
+        case "leaveGame":
+          this.gameIsActive = false;
+          this.clearData()
           break;
       }
     })
@@ -141,7 +144,6 @@ export class OnlineComponent implements OnInit, OnDestroy {
           }
         }
       ));
-      this.gameIsActive = true
     }
   }
 
@@ -158,5 +160,34 @@ export class OnlineComponent implements OnInit, OnDestroy {
         horizontalPosition: horizontalPosition,
         verticalPosition: verticalPosition,
       });
+  }
+
+  clearData() {
+    this.data = {
+      gameId: "",
+      name: "",
+      playerx: "", //player 1 id
+      playero: "", //player 2 id
+      gameData: {
+        squares: [],
+        xIsNext: false,
+        winner: null,
+        moveCounter: 0,
+        score: {x: 0, o: 0, draw: 0},
+      }
+    }
+  }
+
+  leaveGame() {
+    if (this.gameIsActive) {
+      this.ws.send(JSON.stringify(
+        {
+          action:"leaveGame",
+          data: {
+            gameId: this.data.gameId,
+          }
+        }
+      ));
+    }
   }
 }
